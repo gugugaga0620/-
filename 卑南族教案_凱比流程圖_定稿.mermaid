@@ -1,0 +1,65 @@
+%% 卑南族文化語言教案 — 凱比流程圖（定稿版）
+%% 語別：西群卑南語
+%% 變數：lang（語言介紹完成）、cult（文化介紹完成）
+%% 花色：語言＝紅、文化＝黃、挑戰＝白（白花最後獲得，位於花環正中間）
+%% 題庫：4 題，語言 2 + 文化 2，HowManyQuestion = 4（全出）
+
+flowchart TD
+
+START(["待機"]) --> SEE["see_face<br/>你好，我是文化大使凱比<br/>摸摸我的頭就可以開始"]
+SEE --> TOUCH["touch_head"]
+TOUCH --> NAME["輸入姓名<br/>text_keyboard，逾時 60 秒"]
+NAME --> HELLO["先教一句<br/>播 bn01_inavayan.mp3"]
+HELLO --> TASK["任務說明<br/>完成一個活動得到一朵花<br/>集滿三朵，花環就完成"]
+TASK --> INIT["初始化變數<br/>lang = 0、cult = 0"]
+INIT --> MENU{"主選單"}
+
+%% ---------- 語言介紹 ----------
+subgraph LANG ["語言介紹：五張卡"]
+  L1["inavayan"] --> L2["inavayan i ___ kum ngadan"]
+  L2 --> L3["semangal ku kirekalrazam kannu"]
+  L3 --> L4["lrayuwan"]
+  L4 --> L5["marepana'uwa ta ziya"]
+end
+MENU -->|語言介紹| L1
+L5 --> LF["flower_red.png　獲得一朵紅花<br/>在卑南族，花環是送給客人的禮物<br/>lang = 1"]
+LF --> MENU
+
+%% ---------- 文化介紹 ----------
+subgraph CULT ["文化介紹：avay 阿拜"]
+  C1["avay 是什麼"] --> C2["兩層葉子｜剖面圖"]
+  C2 --> C3["外層月桃葉要拆掉<br/>內層假酸漿葉可以吃"]
+  C3 --> C4{"哪一層要拆掉"}
+  C4 -->|答錯，重講一次| C3
+end
+MENU -->|文化介紹| C1
+C4 -->|答對| CF["flower_yellow.png　獲得一朵黃花<br/>招待客人吃 avay，也是歡迎人的方式<br/>cult = 1"]
+CF --> MENU
+
+%% ---------- 關卡挑戰（需解鎖） ----------
+MENU -->|關卡挑戰| G1{"lang = 1"}
+G1 -->|否| LOCK["還沒學過就要考試喔？<br/>先去認識卑南族的話和 avay 吧"]
+G1 -->|是| G2{"cult = 1"}
+G2 -->|否| LOCK
+LOCK --> MENU
+G2 -->|是| Q1["題目庫 App｜4 題<br/>語言 2 題 + 文化 2 題<br/>HowManyQuestion = 4"]
+
+Q1 --> QF["flower_white.png　獲得一朵白花<br/>白花要放在花環的正中間"]
+
+%% ---------- 完成 ----------
+QF --> FIN["garland_complete.png　恭喜完成<br/>花環是歡迎你、祝福你的意思<br/>播祝福語音檔"]
+FIN --> BYE["播 bn05_marepanauwa.mp3<br/>回家記得教給一個人"]
+BYE --> ENDN(["結束，回到待機"])
+
+%% ---------- 樣式 ----------
+classDef trig fill:#e8f0fa,stroke:#2f6fb0,color:#12384f
+classDef teach fill:#e6f4ee,stroke:#2e9e77,color:#14402f
+classDef quiz fill:#fdf2e2,stroke:#d8912b,color:#4a3210
+classDef fin fill:#fbecef,stroke:#c4566e,color:#4a1a26
+classDef sys fill:#f0efec,stroke:#8a8a85,color:#333333
+
+class START,SEE,TOUCH trig
+class NAME,HELLO,TASK,INIT,MENU,G1,G2,LOCK sys
+class L1,L2,L3,L4,L5,LF,C1,C2,C3,C4,CF teach
+class Q1,QF quiz
+class FIN,BYE,ENDN fin
